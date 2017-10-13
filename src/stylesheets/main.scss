@@ -1,0 +1,74 @@
+@media (min-width: 768px){
+  .container {
+    width: 750px;
+  }
+}
+
+
+@media (min-width: 992px) {
+  .container {
+    width: 970px;
+  }
+}
+
+
+@media (min-width: 1200px) {
+  .container {
+    width: 1170px;
+  }
+}
+
+.container {
+  margin-top: 50px;
+
+  table {
+    .img-responsive {
+      max-width: 100%;
+    }
+
+  }
+
+  .nav {
+    margin: 30px 0 20px 0;
+  }
+
+  .pokemons-pagination {
+    margin-top: 0;
+  }
+
+  table {
+    width: 100%;
+  }
+}
+
+.progress {
+  margin: 10px auto;
+  width: 300px;
+}
+
+td .progress {
+  width: 100px;
+}
+
+.table-datatable {
+  .thead-default {
+    .thead-tr-default {
+      .thead-th-default {
+        &.sortable { // If and only if a column is sortable
+          &:hover {
+            background: #A7FAE8; // Your color of choice
+            cursor: pointer; // Changes the cursor into a pointer on hover
+          }
+        }
+      }
+    }
+  }
+
+  .tbody-default {
+    .tbody-tr-default {
+      .tbody-td-default {
+        // do what you want
+      }
+    }
+  }
+}
