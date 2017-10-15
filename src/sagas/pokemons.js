@@ -9,7 +9,6 @@ export function* pokemonsFetchList(actionObj) { //consists of action type and pa
   // call the api to get the pokemons
   const pokemons = yield call(ApiPokemons.getPokemonsByState, actionObj);
 
-  debugger;
   //dispatch the success action with the pokemons attached
   yield put({
     type: 'pokemons.fetchListSuccess',

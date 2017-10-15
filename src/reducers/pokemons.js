@@ -25,7 +25,6 @@ export default function pokemons(state = {}, action) { //first init app, state i
     case 'pokemons.fetchListSuccess':
       new_state = JSON.parse(JSON.stringify(state));
       new_state.list = action.pokemons;
-      debugger;
       return new_state;
 
     case 'pokemons.fetchPageSuccess':

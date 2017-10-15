@@ -56,7 +56,6 @@ export default class ApiPokemons
                 }
 
               }
-            debugger;
             return pokemons;
           });
       })
@@ -95,7 +94,6 @@ export default class ApiPokemons
   }
 
   static sendBackPokemons(pokemons) {
-    debugger;
     return pokemons;
   }
   // get pokemons by state,
@@ -159,7 +157,6 @@ export default class ApiPokemons
     });
 
     function sendResponse(pokemons) {
-      debugger;
       ApiPokemons.sendBackPokemons(pokemons);
     }
 //
