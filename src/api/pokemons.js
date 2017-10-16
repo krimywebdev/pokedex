@@ -218,7 +218,8 @@ export default class ApiPokemons
 //        }
 //
 //      }));
-      let jsPromise = Promise.resolve($.ajax('https://cors.now.sh/https://pokeapi.co/api/v2/type/' + stateId + '/'));
+      let jsPromise = Promise.resolve($.ajax('https://pokeapi.co/api/v2/type/' + stateId + '/'));
+//      let jsPromise = Promise.resolve($.ajax('https://cors.now.sh/https://pokeapi.co/api/v2/type/' + stateId + '/'));
       jsPromise.then(function(response){
         buildMapFromResponse(response);
       }, function(xhrObj){

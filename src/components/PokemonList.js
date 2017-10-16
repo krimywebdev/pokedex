@@ -67,9 +67,9 @@ export class PokemonList extends React.Component
 
       return(
         <BootstrapTable data={ pokemons } striped hover condensed options={ options } pagination search>
-          <TableHeaderColumn dataField='id' isKey>ID</TableHeaderColumn>
+          <TableHeaderColumn dataField='id' isKey dataSort>ID</TableHeaderColumn>
           <TableHeaderColumn dataField='avatar' dataFormat={formatAvatar}>Avatar</TableHeaderColumn>
-          <TableHeaderColumn dataField='pname'>Name</TableHeaderColumn>
+          <TableHeaderColumn dataField='pname' dataSort>Name</TableHeaderColumn>
           <TableHeaderColumn dataField='ptypes' dataFormat={formatTypes} filter={ { type: 'TextFilter' } }>Types</TableHeaderColumn>
           <TableHeaderColumn dataField='attributes'>Attributes</TableHeaderColumn>
         </BootstrapTable>

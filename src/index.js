@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { browserHistory, Router, Route, IndexRoute } from 'react-router';
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
-import { Provider } from 'react-redux';  //need to tell redux to pass the state to all components
+import { Provider } from 'react-redux'; // need to tell redux to pass the state to all components
 import createSagaMiddleware from 'redux-saga';
 
 import './stylesheets/main.scss';
