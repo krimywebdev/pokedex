@@ -1,3 +1,21 @@
+.nav-pills>li {
+  display: none;
+}
+
+h2 {
+  margin-left: 15px;
+}
+
+.img-center {
+  img {
+    margin: 0 auto;
+  }
+}
+
+.center {
+  text-align: center;
+}
+
 @media (min-width: 768px){
   .container {
     width: 750px;
@@ -19,7 +37,6 @@
 }
 
 .container {
-  margin-top: 50px;
 
   table {
     .img-responsive {
@@ -71,4 +88,8 @@ td .progress {
       }
     }
   }
+}
+
+.react-bs-table-container {
+  padding: 0 15px;
 }

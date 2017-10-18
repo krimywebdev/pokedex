@@ -53,7 +53,10 @@ class PokemonListElement extends React.Component
           <td>{pokemon.pname}</td>
           <td><ProgressBar active now={100}/></td>
           <td>
-            <ProgressBar active now={100}/>
+            <Button bsSize="xsmall" data-id={pokemon.id} data-pname={pokemon.pname}
+              onClick={this.modalDetailShow}>
+              View Details <Glyphicon glyph="eye-open"/>
+            </Button>
           </td>
         </tr>
       );

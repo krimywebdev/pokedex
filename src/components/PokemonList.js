@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Table, ProgressBar } from 'react-bootstrap';
+import { Table, ProgressBar, Button, Modal } from 'react-bootstrap';
 import { push } from 'react-router-redux';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import '../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
@@ -36,17 +36,37 @@ export class PokemonList extends React.Component
 
 
     //bind this to all event methods
-    //this.changePage = this.changePage.bind(this);
+    this.modalAttributesShow = this.modalAttributesShow.bind(this);
 
   }
 
+  modalAttributesShow(event) {
+
+    const id = Number(event.target.dataset.id);
+
+    //dispatch action
+    this.props.dispatch({
+      type: 'pokemons.modalAttributesShow',
+      id: id,
+      pname: event.target.dataset.pname
+    });
+
+    this.props.dispatch({
+      type: 'pokemonsFetchTypeOfPokemon',
+      purl: event.target.dataset.purl,
+      pokemon: this.props.pokemons[id - 1]
+    });
+
+  }
 
   render() {
     var pokemons = this.props.pokemons;
+    var that = this;
 
     const options = {
       paginationSize: 5,
-      paginationShowsTotal: false  // Enable showing total text
+      paginationShowsTotal: false,  // Enable showing total text
+      clearSearch: true
     };
 
     function formatAvatar(cell, row) {
@@ -63,103 +83,44 @@ export class PokemonList extends React.Component
         );
     }
 
+    function formatAttributes(cell, row) {
+
+      return (
+        <Button bsSize='small' data-id={row.id} data-pname={row.pname} data-purl={row.purl}
+        onClick={that.modalAttributesShow}>Details</Button>
+        );
+    }
+
     if(this.props.pokemons.length) {
 
       return(
-        <BootstrapTable data={ pokemons } striped hover condensed options={ options } pagination search>
-          <TableHeaderColumn dataField='id' isKey dataSort>ID</TableHeaderColumn>
-          <TableHeaderColumn dataField='avatar' dataFormat={formatAvatar}>Avatar</TableHeaderColumn>
-          <TableHeaderColumn dataField='pname' dataSort>Name</TableHeaderColumn>
-          <TableHeaderColumn dataField='ptypes' dataFormat={formatTypes} filter={ { type: 'TextFilter' } }>Types</TableHeaderColumn>
-          <TableHeaderColumn dataField='attributes'>Attributes</TableHeaderColumn>
-        </BootstrapTable>
+        <div>
+          <h2>Pokedex</h2>
+          <BootstrapTable data={ pokemons } striped hover condensed options={ options } pagination search>
+            <TableHeaderColumn dataField='id' isKey dataSort>ID</TableHeaderColumn>
+            <TableHeaderColumn dataField='avatar' dataFormat={formatAvatar}>Avatar</TableHeaderColumn>
+            <TableHeaderColumn dataField='pname' dataSort>Name</TableHeaderColumn>
+            <TableHeaderColumn dataField='ptypes' dataFormat={formatTypes} filter={ { type: 'TextFilter' } }>Types</TableHeaderColumn>
+            <TableHeaderColumn dataField='' dataFormat={formatAttributes}>Attributes</TableHeaderColumn>
+          </BootstrapTable>
+          <PokemonSeeDetail/>
+        </div>
       );
     } else {
       //show the loading state
       return(
-        <ProgressBar active now={100}/>
+        <div>
+          <h2>Welcome to my Pokedex!</h2>
+          <ProgressBar active now={100}/>
+        </div>
       );
 
     }
 
   }
 
-//  render()
-//  {
-//
-//    //pagination
-//    const per_page = 10;
-//    const pages = Math.ceil(this.props.pokemons.length / per_page);
-//    const current_page = this.props.page;
-//    const start_offset = (current_page - 1) * per_page;
-//    let start_count = 0;
-//
-//    //render
-//    if(this.props.pokemons.length) {
-//      //show the list of users
-//
-//
-//      return (
-//        <div>
-//          <Table bordered hover responsive striped>
-//            <thead>
-//              <tr>
-//                <th>Avatar</th>
-//                <th>Name</th>
-//                <th>Type</th>
-//                <th>Attributes</th>
-//              </tr>
-//            </thead>
-//            <tbody>
-//                {this.props.pokemons.map((pokemon, index) => {
-//                  if (index >= start_offset && start_count < per_page) {
-//                    start_count++;
-//                    return (
-//                      <PokemonListElement key={pokemon.id} pokemon={pokemon}/>
-//                    );
-//                  }
-//                })}
-//            </tbody>
-//          </Table>
-//
-//          <Pagination className="pokemons-pagination pull-right" bsSize="medium"
-//            maxButtons={10} first last next prev boundaryLinks
-//            items={pages} activePage={current_page} onSelect={this.changePage} />
-//
-//          <PokemonSeeDetail/>
-//        </div>
-//      );
-//    } else {
-//      //show the loading state
-//      return(
-//        <ProgressBar active now={100}/>
-//      );
-//    }
-//  }
-
-  /**
-   * Change the pokemons lists' current page
-   */
-  changePage(page)
-  {
-
-    this.props.dispatch({
-      type: 'pokemonsResetStateOnPageChange',
-      page: page,
-      pokemons: this.props.pokemons
-    });
-
-    this.props.dispatch(push('/?page=' + page));
-
-    this.props.dispatch({
-      type: 'pokemonsFetchPage',
-      page: page,
-      pokemons: this.props.pokemons
-    });
-
-  }
-
 }
+
 
 PokemonList.PropTypes = {
   pokemons: React.PropTypes.array

@@ -1,23 +1,25 @@
 export default function pokemons(state = {}, action) { //first init app, state is empty, we don't want that, so empty obj
   let new_state;
   switch (action.type) {
-    case 'pokemons.modalDetailShow':
+    case 'pokemons.modalAttributesShow':
       new_state = JSON.parse(JSON.stringify(state));
       new_state.modal = new_state.modal? new_state.modal: {}; //needed to prevent undefined error when modal does not exist
-      new_state.modal.see_detail = {
+      new_state.modal.see_attributes = {
         show: true,
         id: action.id,
         pname: action.pname,
+        pokemon: action.pokemon
       }
 
       return new_state;
 
     case 'pokemons.modalHide':
       new_state = JSON.parse(JSON.stringify(state));
-      new_state.modal.see_detail = {
+      new_state.modal.see_attributes = {
         show: false,
         id: 0,
-        pname: ''
+        pname: '',
+        pokemon: {}
       }
 
       return new_state;
@@ -39,7 +41,13 @@ export default function pokemons(state = {}, action) { //first init app, state i
 
     case 'pokemons.fetchTypeOfPokemonSuccess':
       new_state = JSON.parse(JSON.stringify(state));
-      new_state.pokemon = action.pokemon;
+      new_state.modal.see_attributes = {
+        show: true,
+        id: action.id,
+        pname: action.pname,
+        pokemon: action.pokemon
+      }
+
       return new_state;
 
     default:
