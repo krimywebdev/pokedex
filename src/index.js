@@ -15,14 +15,14 @@ import { reducers } from './reducers/index';
 import { sagas } from './sagas/index';
 
 
-//create the store
+// create the store
 const sagaMiddleware = createSagaMiddleware();
-let middleware = applyMiddleware(routerMiddleware(browserHistory), sagaMiddleware);
+const middleware = applyMiddleware(routerMiddleware(browserHistory), sagaMiddleware);
 const store = createStore(reducers, middleware);
 const history = syncHistoryWithStore(browserHistory, store);
 sagaMiddleware.run(sagas);
 
-//render main comp
+// render main comp
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
@@ -32,4 +32,8 @@ ReactDOM.render(
       </Route>
     </Router>
   </Provider>,
-  document.getElementById('pokedex-app'));
+  /* eslint-disable no-undef */
+  document.getElementById('pokedex-app'),
+  /* eslint-enable no-undef */
+);
+
