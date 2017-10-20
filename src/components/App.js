@@ -5,11 +5,9 @@ import Menu from './Menu';
  * App component
  */
 
-export default class App extends React.Component
-{
-  render()
-  {
-    //render
+export default class App extends React.Component {
+  render() {
+    // render
     return (
       <div className="container">
         <div className="row">
