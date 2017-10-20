@@ -81,13 +81,14 @@ export class PokemonList extends React.Component {
       );
     }
 
-    if (this.props.pokemons.length === 1 && this.props.pokemons[0].error ) {
+    if (this.props.pokemons.length === 1 && this.props.pokemons[0].error) {
       return (
         <div>
           <h2>Pokedex</h2>
           <Alert bsStyle="danger">
             <h4>There was an error fetching the list of pokemons.</h4>
-            <p>Please refresh the browser after some time. Try installing a CORS plugin for your browser if this is due to CORS.</p>
+            <p>Please refresh the browser after some time.
+            Try installing a CORS plugin for your browser if this is due to CORS.</p>
           </Alert>
         </div>
       );
