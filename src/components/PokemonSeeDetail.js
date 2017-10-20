@@ -14,7 +14,6 @@ class PokemonSeeDetail extends React.Component {
   }
 
   render() {
-
     if (this.props.modal_see_attributes.pokemon && this.props.modal_see_attributes.pokemon.error) {
       return (
         <Modal show={this.props.modal_see_attributes.show}>

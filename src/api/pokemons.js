@@ -66,93 +66,82 @@ export default class ApiPokemons {
 
   static getPokemonById(actionObj) {
     const url = actionObj.purl;
+    /* eslint-disable no-undef */
     return fetch(url)
-      .then((response) => {
-        return response.json()
-          .then((respJson) => {
-            console.log(respJson.toString());
-            let pokemon = actionObj.pokemon;
-            pokemon.ptypes = (respJson.types).map(function(typeEntry){
-              return typeEntry.type.name;
-            });
-            let height = respJson.height ? respJson.height/10 + ' m': 'Not specified';
-            let order = respJson.order? respJson.order: "Not specified";
-            let weight = respJson.weight? respJson.weight/10 + ' kg': "Not specified";
-            pokemon.attributes = {
-              height: height,
-              order: order,
-              weight: weight
-            };
-            return pokemon;
-          })
-      }).catch(error => {
-        return {
-          error: true,
-          message: error.message,
-        }
-      });
+    /* eslint-enable no-undef */
+      .then(response => response.json()
+        .then((respJson) => {
+          const pokemon = actionObj.pokemon;
+          pokemon.ptypes = (respJson.types).map(typeEntry => typeEntry.type.name);
+          const height = respJson.height ? respJson.height / 10 + ' m' : 'Not specified';
+          const order = respJson.order ? respJson.order : 'Not specified';
+          const weight = respJson.weight ? respJson.weight / 10 + ' kg' : 'Not specified';
+          pokemon.attributes = {
+            height,
+            order,
+            weight,
+          };
+          return pokemon;
+        })).catch(error => ({ error: true, message: error.message }));
   }
 
   // get pokemons by state,
   static getPokemonsByState(actionObj) {
     // build the pokemons list
-    let pokemons = actionObj.pokemons && actionObj.pokemons.length > 0 ? JSON.parse(JSON.stringify(actionObj.pokemons)): [] ;
-    let pokemonsMap = new Map();
-    let promises = [];
-    for (let i=1; i<=18; i++) {
+    let pokemons = actionObj.pokemons && actionObj.pokemons.length > 0 ?
+      JSON.parse(JSON.stringify(actionObj.pokemons)) : [];
+    const pokemonsMap = new Map();
+    const promises = [];
+    for (let i = 1; i <= 18; i += 1) {
+      /* eslint-disable no-use-before-define */
       promises.push(getPokemonsByStateId(i));
+      /* eslint-enable no-use-before-define */
     }
 
-    return Promise.all(promises).then(function(result){
-      //make array out of this map
+    return Promise.all(promises).then(() => {
+      // make array out of this map
       pokemons = Array.from(pokemonsMap.values());
-      pokemons.sort(function(a, b) {
-        return a.id - b.id;
-      });
+      pokemons.sort((a, b) => a.id - b.id);
       return pokemons;
-    }, function(errorResult) {
-      return [{
-        error: true,
-      }];
-    });
+    }, () => [{ error: true }]);
+
+    function getPokemonsByStateId(stateId) {
+      /* eslint-disable no-undef */
+      const jsPromise = Promise.resolve($.ajax('https://pokeapi.co/api/v2/type/' + stateId + '/'));
+      /* eslint-enable no-undef */
+
+      // let jsPromise = Promise.resolve($.ajax('https://cors.now.sh/https://pokeapi.co/api/v2/type/' + stateId + '/'));
+      jsPromise.then(
+        /* eslint-disable no-use-before-define */
+        response => buildMapFromResponse(response)
+        /* eslint-enable no-use-before-define */
+        , xhrObj => false,
+      );
+      return jsPromise;
+    }
 
     function buildMapFromResponse(responseArray) {
-      for(let i=0; i<responseArray.pokemon.length; i++) {
-        let listOfPokemons = responseArray.pokemon;
-        let key = listOfPokemons[i].pokemon.name;
-        if(pokemonsMap.has(key)) {
-          let entry = pokemonsMap.get(key);
+      for (let i = 0; i < responseArray.pokemon.length; i += 1) {
+        const listOfPokemons = responseArray.pokemon;
+        const key = listOfPokemons[i].pokemon.name;
+        if (pokemonsMap.has(key)) {
+          const entry = pokemonsMap.get(key);
           entry.ptypes.push(responseArray.name);
         } else {
-
-          let url = listOfPokemons[i].pokemon.url;
-          let arr = url.split('/');
-          let id = parseInt(arr[arr.length-2]);
+          const url = listOfPokemons[i].pokemon.url;
+          const arr = url.split('/');
+          const id = Number(arr[arr.length - 2]);
 
           pokemonsMap.set(key, {
             purl: url,
             pname: listOfPokemons[i].pokemon.name,
             ptypes: new Array(responseArray.name),
-            id: id,
+            id,
             avatar: 'pokemon/' + id + '.png',
-            attributes: 'Coming Soon...'
+            attributes: 'Coming Soon...',
           });
         }
-
       }
-    }
-
-    function getPokemonsByStateId(stateId) {
-
-      let jsPromise = Promise.resolve($.ajax('https://pokeapi.co/api/v2/type/' + stateId + '/'));
-      // let jsPromise = Promise.resolve($.ajax('https://cors.now.sh/https://pokeapi.co/api/v2/type/' + stateId + '/'));
-      jsPromise.then(function(response){
-        buildMapFromResponse(response);
-      }, function(xhrObj){
-        // error handling;
-        return {'result': false};
-      });
-      return jsPromise;
     }
   }
 }
