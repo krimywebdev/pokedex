@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Button, ProgressBar } from 'react-bootstrap';
+import { Modal, Button, ProgressBar, Alert } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 class PokemonSeeDetail extends React.Component {
@@ -14,7 +14,28 @@ class PokemonSeeDetail extends React.Component {
   }
 
   render() {
-    if (this.props.modal_see_attributes.pokemon
+
+    if (this.props.modal_see_attributes.pokemon && this.props.modal_see_attributes.pokemon.error) {
+      return (
+        <Modal show={this.props.modal_see_attributes.show}>
+          <Modal.Header>
+            <Modal.Title>
+            Details about Pokemon&nbsp;
+              <strong>{this.props.modal_see_attributes.pname}</strong>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Alert bsStyle="danger">
+              <h4>There was an error fetching the details of this pokemon.</h4>
+              <p>{this.props.modal_see_attributes.pokemon.message}</p>
+            </Alert>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.modalHide} bsStyle='primary'>Close</Button>
+          </Modal.Footer>
+        </Modal>
+      );
+    } else if (this.props.modal_see_attributes.pokemon
       && this.props.modal_see_attributes.pokemon.attributes
       && this.props.modal_see_attributes.pokemon.attributes.height) {
       return (

@@ -86,7 +86,10 @@ export default class ApiPokemons {
             return pokemon;
           })
       }).catch(error => {
-          throw error;
+        return {
+          error: true,
+          message: error.message,
+        }
       });
   }
 
@@ -107,6 +110,10 @@ export default class ApiPokemons {
         return a.id - b.id;
       });
       return pokemons;
+    }, function(errorResult) {
+      return [{
+        error: true,
+      }];
     });
 
     function buildMapFromResponse(responseArray) {
@@ -142,15 +149,10 @@ export default class ApiPokemons {
       jsPromise.then(function(response){
         buildMapFromResponse(response);
       }, function(xhrObj){
-        //error handling;
+        // error handling;
+        return {'result': false};
       });
       return jsPromise;
     }
   }
-
-
-
-
-
-
 }

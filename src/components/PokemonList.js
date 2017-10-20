@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Table, ProgressBar, Button, Modal } from 'react-bootstrap';
+import { Table, ProgressBar, Button, Modal, Alert } from 'react-bootstrap';
 import { push } from 'react-router-redux';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import '../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
@@ -81,7 +81,17 @@ export class PokemonList extends React.Component {
       );
     }
 
-    if (this.props.pokemons.length) {
+    if (this.props.pokemons.length === 1 && this.props.pokemons[0].error ) {
+      return (
+        <div>
+          <h2>Pokedex</h2>
+          <Alert bsStyle="danger">
+            <h4>There was an error fetching the list of pokemons.</h4>
+            <p>Please refresh the browser after some time. Try installing a CORS plugin for your browser if this is due to CORS.</p>
+          </Alert>
+        </div>
+      );
+    } else if (this.props.pokemons.length) {
       return (
         <div>
           <h2>Pokedex</h2>
